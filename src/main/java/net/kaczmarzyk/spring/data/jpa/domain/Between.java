@@ -15,11 +15,7 @@
  */
 package net.kaczmarzyk.spring.data.jpa.domain;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 
 import net.kaczmarzyk.spring.data.jpa.utils.Converter;
 import net.kaczmarzyk.spring.data.jpa.utils.QueryContext;
@@ -65,8 +61,8 @@ public class Between<T> extends PathSpecification<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-		Expression<Comparable<Object>> targetExpression = path(root);
-		Class<?> typeOnPath = targetExpression.getJavaType();
+		Path<Comparable<Object>> targetExpression = path(root);
+		Class<?> typeOnPath = getConcreteJavaType(targetExpression);
 		
 		Comparable<Object> lowerBoundary = (Comparable<Object>) converter.convert(lowerBoundaryStr, typeOnPath);
 		Comparable<Object> upperBoundary = (Comparable<Object>) converter.convert(upperBoundaryStr, typeOnPath);

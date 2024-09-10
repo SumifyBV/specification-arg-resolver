@@ -50,7 +50,7 @@ public class NotEqual<T> extends PathSpecification<T> {
 
 	@Override
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-		Class<?> typeOnPath = path(root).getJavaType();
+		Class<?> typeOnPath = getConcreteJavaType(path(root));
 		return cb.notEqual(path(root), converter.convert(expectedValue, typeOnPath));
 	}
 

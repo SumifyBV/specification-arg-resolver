@@ -18,11 +18,7 @@ package net.kaczmarzyk.spring.data.jpa.domain;
 import java.util.Arrays;
 import java.util.Objects;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 
 import net.kaczmarzyk.spring.data.jpa.utils.Converter;
 import net.kaczmarzyk.spring.data.jpa.utils.QueryContext;
@@ -54,8 +50,8 @@ public abstract class ComparableSpecification<T> extends PathSpecification<T> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-		Expression<?> rootPath = path(root);
-		Class<?> typeOnPath = rootPath.getJavaType();
+		Path<?> rootPath = path(root);
+		Class<?> typeOnPath = getConcreteJavaType(rootPath);
 
 		return makePredicate(cb, (Expression<? extends Comparable>) rootPath, 
 				(Comparable) converter.convert(comparedTo, typeOnPath));

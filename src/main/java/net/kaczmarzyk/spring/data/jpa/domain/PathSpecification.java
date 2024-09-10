@@ -17,12 +17,18 @@ package net.kaczmarzyk.spring.data.jpa.domain;
 
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
-
+import jakarta.persistence.metamodel.SingularAttribute;
+import net.kaczmarzyk.spring.data.jpa.utils.QueryContext;
 import org.springframework.data.jpa.domain.Specification;
 
-import net.kaczmarzyk.spring.data.jpa.utils.QueryContext;
-
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
+import java.util.Optional;
+
+import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
+import static java.util.Optional.ofNullable;
 
 
 /**
@@ -58,6 +64,51 @@ public abstract class PathSpecification<T> implements Specification<T> {
             }
         }
         return (Path<F>) expr;
+    }
+
+    protected <F> Class<?> getConcreteJavaType(final Path<F> path) {
+        var parentType = ofNullable(path.getParentPath())
+                .map(Path::getJavaType);
+
+        var typeParameters = parentType
+                .map(Class::getSuperclass)
+                .map(Class::getTypeParameters)
+                .filter(types -> types.length > 0);
+
+        if (typeParameters.isEmpty()) {
+            return path.getJavaType();
+        }
+
+        var actualTypeArguments = parentType
+                .map(Class::getGenericSuperclass)
+                .filter(ParameterizedType.class::isInstance)
+                .map(ParameterizedType.class::cast)
+                .map(ParameterizedType::getActualTypeArguments);
+
+        return ofNullable(path.getModel())
+                .filter(SingularAttribute.class::isInstance)
+                .map(SingularAttribute.class::cast)
+                .map(SingularAttribute::getName)
+                .flatMap(name -> recursivelyFindField(path.getParentPath().getJavaType(), name))
+                .map(Field::getGenericType)
+                .flatMap(type -> typeParameters
+                        .map(typeParams -> asList(typeParams).indexOf(type))
+                        .flatMap(index -> actualTypeArguments
+                                .filter(types -> types.length > index)
+                                .map(types -> types[index]))
+                )
+                .filter(Class.class::isInstance)
+                .map(Class.class::cast)
+                .orElseGet(path::getJavaType);
+    }
+
+    private Optional<Field> recursivelyFindField(final Class<?> clazz, final String fieldName) {
+        return ofNullable(clazz)
+                .map(Class::getDeclaredFields)
+                .flatMap(fields -> stream(fields)
+                        .filter(field -> field.getName().equals(fieldName))
+                        .findFirst())
+                .or(() -> recursivelyFindField(clazz.getSuperclass(), fieldName));
     }
 
 	private Path<T> getEvaluatedPath(String field, Root<T> root) {

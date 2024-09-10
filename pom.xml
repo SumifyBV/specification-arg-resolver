@@ -3,7 +3,7 @@
 
 	<groupId>net.kaczmarzyk</groupId>
 	<artifactId>specification-arg-resolver</artifactId>
-	<version>3.1.1-SNAPSHOT</version>
+	<version>3.1.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>specification-arg-resolver</name>
@@ -325,16 +325,24 @@
 		</dependency>
 	</dependencies>
 
+<!--	<distributionManagement>-->
+<!--		<repository>-->
+<!--			<id>kaczmarzyk.net</id>-->
+<!--			<name>kaczmarzyk.net repository</name>-->
+<!--			<url>ftp://repo.kaczmarzyk.net</url>-->
+<!--		</repository>-->
+<!--		<snapshotRepository>-->
+<!--			<id>kaczmarzyk.net</id>-->
+<!--			<name>kaczmarzyk.net repository</name>-->
+<!--			<url>ftp://repo.kaczmarzyk.net</url>-->
+<!--		</snapshotRepository>-->
+<!--	</distributionManagement>-->
+
 	<distributionManagement>
 		<repository>
-			<id>kaczmarzyk.net</id>
-			<name>kaczmarzyk.net repository</name>
-			<url>ftp://repo.kaczmarzyk.net</url>
+			<id>advidi--Advidi</id>
+			<name>advidi--Advidi</name>
+			<url>https://advidi-644780430956.d.codeartifact.eu-west-1.amazonaws.com/maven/Advidi/</url>
 		</repository>
-		<snapshotRepository>
-			<id>kaczmarzyk.net</id>
-			<name>kaczmarzyk.net repository</name>
-			<url>ftp://repo.kaczmarzyk.net</url>
-		</snapshotRepository>
 	</distributionManagement>
 </project>

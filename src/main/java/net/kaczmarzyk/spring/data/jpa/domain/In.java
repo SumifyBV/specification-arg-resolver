@@ -58,7 +58,7 @@ public class In<T> extends PathSpecification<T> {
 	@Override
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 		Path<?> path = path(root);
-		Class<?> typeOnPath = path.getJavaType();
+		Class<?> typeOnPath = getConcreteJavaType(path);
 		return path.in(converter.convert(Arrays.asList(allowedValues), typeOnPath));
 	}
 
