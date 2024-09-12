@@ -93,6 +93,7 @@ public abstract class PathSpecification<T> implements Specification<T> {
                 .map(Field::getGenericType)
                 .flatMap(type -> typeParameters
                         .map(typeParams -> asList(typeParams).indexOf(type))
+						.filter(index -> index >= 0)
                         .flatMap(index -> actualTypeArguments
                                 .filter(types -> types.length > index)
                                 .map(types -> types[index]))

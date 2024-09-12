@@ -3,7 +3,7 @@
 
 	<groupId>net.kaczmarzyk</groupId>
 	<artifactId>specification-arg-resolver</artifactId>
-	<version>3.1.2-SNAPSHOT</version>
+	<version>3.1.2-ADVIDI</version>
 	<packaging>jar</packaging>
 
 	<name>specification-arg-resolver</name>
