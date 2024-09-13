@@ -56,7 +56,7 @@ public class EqualDay<T> extends PathSpecification<T> {
 	@Override
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 		Path<Comparable<Object>> targetExpression = path(root);
-		Class<?> typeOnPath = getConcreteJavaType(targetExpression);
+		Class<?> typeOnPath = getConcreteJavaType(targetExpression, path);
 
 		Object targetDayDate = converter.convert(expectedDay, typeOnPath);
 		Predicate lowerBoundaryPredicate = criteriaBuilder.greaterThanOrEqualTo(targetExpression, (Comparable<Object>) startOfDay(targetDayDate));

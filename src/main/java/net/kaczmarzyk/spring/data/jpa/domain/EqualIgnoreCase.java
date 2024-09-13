@@ -56,11 +56,11 @@ public class EqualIgnoreCase<T> extends PathSpecification<T> implements LocaleAw
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 
-        if (getConcreteJavaType(path(root)).equals(String.class)) {
+        if (getConcreteJavaType(path(root), path).equals(String.class)) {
             return cb.equal(cb.upper(this.<String>path(root)), expectedValue.toUpperCase(locale));
         }
 
-        Class<?> typeOnPath = getConcreteJavaType(path(root));
+        Class<?> typeOnPath = getConcreteJavaType(path(root), path);
         return cb.equal(path(root), converter.convert(expectedValue, typeOnPath, true));
     }
 

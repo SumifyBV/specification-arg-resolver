@@ -46,7 +46,7 @@ public class IsNotMember<T> extends PathSpecification<T> {
 
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        Class<?> typeOnPath = getConcreteJavaType(path(root));
+        Class<?> typeOnPath = getConcreteJavaType(path(root), path);
         Object convertedUnwantedMember = converter.convert(unwantedMember, typeOnPath);
         return criteriaBuilder.isNotMember(convertedUnwantedMember, path(root));
     }

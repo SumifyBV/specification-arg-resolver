@@ -65,7 +65,7 @@ public class Between<T> extends PathSpecification<T> {
 	@Override
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 		Path<Comparable<Object>> targetExpression = path(root);
-		Class<?> typeOnPath = getConcreteJavaType(targetExpression);
+		Class<?> typeOnPath = getConcreteJavaType(targetExpression, path);
 		
 		Comparable<Object> lowerBoundary = (Comparable<Object>) converter.convert(lowerBoundaryStr, typeOnPath);
 		Comparable<Object> upperBoundary = (Comparable<Object>) converter.convert(upperBoundaryStr, typeOnPath);

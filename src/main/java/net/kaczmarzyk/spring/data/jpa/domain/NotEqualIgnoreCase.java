@@ -55,11 +55,11 @@ public class NotEqualIgnoreCase<T> extends PathSpecification<T> implements Local
 
 	@Override
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-		if(getConcreteJavaType(path(root)).equals(String.class)) {
+		if(getConcreteJavaType(path(root), path).equals(String.class)) {
 			return cb.notEqual(cb.upper(this.<String>path(root)), expectedValue.toUpperCase(locale));
 		}
 
-		Class<?> typeOnPath = getConcreteJavaType(path(root));
+		Class<?> typeOnPath = getConcreteJavaType(path(root), path);
 		return cb.notEqual(path(root), converter.convert(expectedValue, typeOnPath, true));
 	}
 

@@ -55,7 +55,7 @@ public abstract class ComparableSpecification<T> extends PathSpecification<T> {
 	@Override
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 		Path<?> rootPath = path(root);
-		Class<?> typeOnPath = getConcreteJavaType(rootPath);
+		Class<?> typeOnPath = getConcreteJavaType(rootPath, path);
 
 		return makePredicate(cb, (Expression<? extends Comparable>) rootPath, 
 				(Comparable) converter.convert(comparedTo, typeOnPath));

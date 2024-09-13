@@ -25,10 +25,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
+import static java.util.regex.Pattern.compile;
 
 
 /**
@@ -39,6 +42,7 @@ import static java.util.Optional.ofNullable;
 public abstract class PathSpecification<T> implements Specification<T> {
     
 	private static final long serialVersionUID = 1L;
+	private static final Pattern LAST_PART_PATTERN = compile("[^.]+$");
 	
 	protected String path;
     private QueryContext queryContext;
@@ -66,7 +70,7 @@ public abstract class PathSpecification<T> implements Specification<T> {
         return (Path<F>) expr;
     }
 
-    protected <F> Class<?> getConcreteJavaType(final Path<F> path) {
+    protected <F> Class<?> getConcreteJavaType(final Path<F> path, final String pathName) {
         var parentType = ofNullable(path.getParentPath())
                 .map(Path::getJavaType);
 
@@ -85,11 +89,12 @@ public abstract class PathSpecification<T> implements Specification<T> {
                 .map(ParameterizedType.class::cast)
                 .map(ParameterizedType::getActualTypeArguments);
 
-        return ofNullable(path.getModel())
-                .filter(SingularAttribute.class::isInstance)
-                .map(SingularAttribute.class::cast)
-                .map(SingularAttribute::getName)
-                .flatMap(name -> recursivelyFindField(path.getParentPath().getJavaType(), name))
+
+        return Optional.ofNullable(pathName)
+				.map(LAST_PART_PATTERN::matcher)
+				.filter(Matcher::find)
+				.map(Matcher::group)
+				.flatMap(fieldName -> recursivelyFindField(path.getParentPath().getJavaType(), fieldName))
                 .map(Field::getGenericType)
                 .flatMap(type -> typeParameters
                         .map(typeParams -> asList(typeParams).indexOf(type))
