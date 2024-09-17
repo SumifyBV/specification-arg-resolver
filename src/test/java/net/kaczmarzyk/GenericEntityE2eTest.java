@@ -59,7 +59,7 @@ public class GenericEntityE2eTest extends IntegrationTestBase {
     }
 
     @RestController
-    public static class MovieController {
+    public static class GenericPersonController {
         @Autowired
         GenericPersonRepository repository;
 
