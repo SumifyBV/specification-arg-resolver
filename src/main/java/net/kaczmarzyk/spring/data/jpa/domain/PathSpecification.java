@@ -90,7 +90,7 @@ public abstract class PathSpecification<T> implements Specification<T> {
                 .map(ParameterizedType::getActualTypeArguments);
 
 
-        return Optional.ofNullable(pathName)
+        return ofNullable(pathName)
 				.map(LAST_PART_PATTERN::matcher)
 				.filter(Matcher::find)
 				.map(Matcher::group)
