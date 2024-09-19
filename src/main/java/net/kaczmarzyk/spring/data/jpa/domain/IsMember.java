@@ -46,7 +46,7 @@ public class IsMember<T> extends PathSpecification<T> {
 
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        Class<?> typeOnPath = path(root).getJavaType();
+        Class<?> typeOnPath = getConcreteJavaType(path(root), path);
         Object convertedExpectedMember = converter.convert(expectedMember, typeOnPath);
         return criteriaBuilder.isMember(convertedExpectedMember, path(root));
     }

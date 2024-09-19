@@ -17,9 +17,9 @@ package net.kaczmarzyk.spring.data.jpa.domain;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jakarta.persistence.criteria.Expression;
 import net.kaczmarzyk.spring.data.jpa.utils.Converter;
 import net.kaczmarzyk.spring.data.jpa.utils.QueryContext;
 
@@ -55,8 +55,8 @@ public class EqualDay<T> extends PathSpecification<T> {
 
 	@Override
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-		Expression<Comparable<Object>> targetExpression = path(root);
-		Class<?> typeOnPath = targetExpression.getJavaType();
+		Path<Comparable<Object>> targetExpression = path(root);
+		Class<?> typeOnPath = getConcreteJavaType(targetExpression, path);
 
 		Object targetDayDate = converter.convert(expectedDay, typeOnPath);
 		Predicate lowerBoundaryPredicate = criteriaBuilder.greaterThanOrEqualTo(targetExpression, (Comparable<Object>) startOfDay(targetDayDate));
