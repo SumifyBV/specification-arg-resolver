@@ -33,8 +33,8 @@ public class DefaultQueryContext implements QueryContext {
 
 	private Map<String, Function<Root<?>, Join<?, ?>>> contextMap;
 	private Map<String, Fetch<?, ?>> evaluatedJoinFetch;
-
 	private Map<Pair<String, Root>, Join<?, ?>> rootCache;
+	private Class<?> resultType;
 
 	public DefaultQueryContext() {
 		this.contextMap = new HashMap<>();
@@ -77,6 +77,16 @@ public class DefaultQueryContext implements QueryContext {
 	@Override
 	public void putEvaluatedJoinFetch(String key, Fetch<?, ?> fetch) {
 		this.evaluatedJoinFetch.put(key, fetch);
+	}
+
+	@Override
+	public Class<?> getResultType() {
+		return resultType;
+	}
+
+	@Override
+	public void setResultType(Class<?> resultType) {
+		this.resultType = resultType;
 	}
 
 	@Override

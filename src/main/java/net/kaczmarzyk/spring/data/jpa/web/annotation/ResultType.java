@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.kaczmarzyk.spring.data.jpa.web;
+package net.kaczmarzyk.spring.data.jpa.web.annotation;
 
-import com.jparams.verifier.tostring.ToStringVerifier;
-import org.junit.jupiter.api.Test;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class DefaultQueryContextTest {
-
-	@Test
-	public void toStringVerifier() {
-		ToStringVerifier.forClass(DefaultQueryContext.class)
-				.withIgnoredFields("evaluatedJoinFetch", "rootCache", "resultType")
-				.verify();
-	}
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.PARAMETER, ElementType.TYPE })
+public @interface ResultType {
+    Class<?> value();
 }

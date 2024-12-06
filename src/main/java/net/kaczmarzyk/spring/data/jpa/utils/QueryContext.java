@@ -38,4 +38,7 @@ public interface QueryContext {
 
     void putEvaluatedJoinFetch(String key, Fetch<?, ?> fetch);
 
+    Class<?> getResultType();
+
+    void setResultType(Class<?> resultType);
 }
