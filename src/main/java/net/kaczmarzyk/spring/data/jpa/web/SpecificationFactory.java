@@ -48,7 +48,9 @@ public class SpecificationFactory {
 						new JoinSpecificationResolver(),
 						new JoinFetchSpecificationResolver(),
 						new RepeatedJoinFetchResolver(),
-						new RepeatedJoinResolver()).stream()
+						new RepeatedJoinResolver(),
+						new ResultTypeSpecificationResolver())
+				.stream()
 				.collect(toMap(
 						SpecificationResolver::getSupportedSpecificationDefinition,
 						identity(),

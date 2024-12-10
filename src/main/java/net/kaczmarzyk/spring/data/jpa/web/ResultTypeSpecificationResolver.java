@@ -15,16 +15,25 @@
  */
 package net.kaczmarzyk.spring.data.jpa.web;
 
-import com.jparams.verifier.tostring.ToStringVerifier;
-import org.junit.jupiter.api.Test;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.ResultType;
+import org.springframework.data.jpa.domain.Specification;
 
-public class DefaultQueryContextTest {
+import java.lang.annotation.Annotation;
 
-	@Test
-	public void toStringVerifier() {
-		ToStringVerifier.forClass(DefaultQueryContext.class)
-				.withIgnoredFields("evaluatedJoinFetch", "rootCache", "resultType")
-				.verify();
-	}
+class ResultTypeSpecificationResolver implements SpecificationResolver<ResultType> {
+
+    public ResultTypeSpecificationResolver() {
+    }
+
+    @Override
+    public Class<? extends Annotation> getSupportedSpecificationDefinition() {
+        return ResultType.class;
+    }
+
+    @Override
+    public Specification<Object> buildSpecification(ProcessingContext context, ResultType def) {
+        context.queryContext().setResultType(def.value());
+        return null;
+    }
 
 }
